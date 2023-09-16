@@ -11,6 +11,9 @@ import { useAuth } from '@/hooks/auth'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFile } from '@fortawesome/free-solid-svg-icons'
+
 const Login = () => {
     const router = useRouter()
 
@@ -50,7 +53,10 @@ const Login = () => {
             <AuthCard
                 logo={
                     <Link href="/">
-                        <ApplicationLogo className="w-20 h-20 fill-current text-gray-500" />
+                        <div className="flex-shrink-0 flex items-center">
+                                <FontAwesomeIcon icon={faFile} className="block h-10 w-auto fill-current text-green" color='green' />
+                                <p className="ml-2">Laravel DMS</p> {/* Updated */}
+                        </div>                    
                     </Link>
                 }>
                 {/* Session Status */}

@@ -6,6 +6,9 @@ import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
 import { useState } from 'react'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFile } from '@fortawesome/free-solid-svg-icons'
+
 const VerifyEmail = () => {
     const { logout, resendEmailVerification } = useAuth({
         middleware: 'auth',
@@ -19,7 +22,10 @@ const VerifyEmail = () => {
             <AuthCard
                 logo={
                     <Link href="/">
-                        <ApplicationLogo className="w-20 h-20 fill-current text-gray-500" />
+                        <div className="flex-shrink-0 flex items-center">
+                                <FontAwesomeIcon icon={faFile} className="block h-10 w-auto fill-current text-green" color='green' />
+                                <p className="ml-2">Laravel DMS</p> {/* Updated */}
+                        </div>                    
                     </Link>
                 }>
                 <div className="mb-4 text-sm text-gray-600">

@@ -1,6 +1,9 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
+import { getCookies, setCookie, deleteCookie, getCookie } from 'cookies-next';
 
 class MyDocument extends Document {
+
+
     static async getInitialProps(ctx) {
         const initialProps = await Document.getInitialProps(ctx)
         return { ...initialProps }

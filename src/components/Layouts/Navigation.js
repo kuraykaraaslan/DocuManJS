@@ -10,6 +10,9 @@ import { useAuth } from '@/hooks/auth'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFile } from '@fortawesome/free-solid-svg-icons'
+
 const Navigation = ({ user }) => {
     const router = useRouter()
 
@@ -25,10 +28,12 @@ const Navigation = ({ user }) => {
                     <div className="flex">
                         {/* Logo */}
                         <div className="flex-shrink-0 flex items-center">
-                            <Link href="/dashboard">
-                                <ApplicationLogo className="block h-10 w-auto fill-current text-gray-600" />
+                            <Link href="/dashboard" className="flex items-center"> {/* Updated */}
+                                <FontAwesomeIcon icon={faFile} className="block h-10 w-auto fill-current text-green" color='green' />
+                                <p className="ml-2">Laravel DMS</p> {/* Updated */}
                             </Link>
                         </div>
+
 
                         {/* Navigation Links */}
                         <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
@@ -37,6 +42,17 @@ const Navigation = ({ user }) => {
                                 active={router.pathname === '/dashboard'}>
                                 Dashboard
                             </NavLink>
+                            <NavLink
+                                href="/documents"
+                                active={router.pathname === '/documents'}>
+                                Documents
+                            </NavLink>
+                            <NavLink
+                                href="/templates"
+                                active={router.pathname === '/templates'}>
+                                Templates
+                            </NavLink>
+                            
                         </div>
                     </div>
 
