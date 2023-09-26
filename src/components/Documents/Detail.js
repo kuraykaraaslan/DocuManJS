@@ -115,32 +115,20 @@ const DocumentDetail = ({ document , active_team_id}) => {
     updated at
     */
 
-    const [inputs, setInputs] = useState([]);
-    const [values, setValues] = useState([]);
-
-    let vauleTimers = {};
+    const [instances, setInstances] = useState([]);
 
     useEffect(() => {
         if (document != null) {
-            setInputs(document.inputs);
-            setValues(JSON.parse(document.values));
+            // http://localhost:8000/api/team/<active_team_id>/documents/<document_id>/inputs
+            axios.get('/api/teams/' + active_team_id + '/documents/' + document.id + '/instances').then(response => {
+                setInstances(response.data.instances);
+            }
+            );
+
         }
 
-    }, [document]);
-
-    const saveValue = (event) => {
-        // make a timer for event.target.id
-        // if timer exists, clear it
-        // set timer for 1 second
-        vauleTimers[event.target.id] = setTimeout(() => {
-            // save values to database
-            // http://localhost:8000/api/team/<active_team_id>/documents/<document_id>/vaule?input=<input_id>&data=<e.target.value>
-            axios.post('/api/team/' + active_team_id + '/documents/' + document.id + '/value', {
-                input: event.target.id,
-                data: event.target.value
-            })
-        }, 1000);
     }
+    , [document]);
 
 
     return (
@@ -179,11 +167,12 @@ const DocumentDetail = ({ document , active_team_id}) => {
                                 Template Title
                             </label>
                             <input
-                                className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500"
+                                className="border border-gray-300 rounded-md px-3 py-2 w-full bg-gray-100 focus:outline-none focus:border-blue-500"
                                 type="text"
                                 id="template"
                                 value={document?.template?.title}
                                 readOnly
+                                disabled
                             />
                         </div>
                         <div className="mb-4">
@@ -191,7 +180,7 @@ const DocumentDetail = ({ document , active_team_id}) => {
                                 Created At
                             </label>
                             <input
-                                className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500"
+                                className="border border-gray-300 rounded-md px-3 py-2 w-full bg-gray-100 focus:outline-none focus:border-blue-500"
                                 type="text"
                                 id="created_at"
                                 value={document?.created_at}
@@ -204,22 +193,82 @@ const DocumentDetail = ({ document , active_team_id}) => {
             <div className="bg-white p-4 mt-4 mb-4">
                 <h2 className="text-2xl font-semibold mb-4">Template Details</h2>
                 <div className="bg-white relative overflow-x-auto flex flex-wrap -mx-3 mt-4 ml-4 mr-4">
-                    <div class="columns-3xs">
-                        {document?.inputs?.map((input) => (
+                    <div class="w-full text-sm text-left">
+                        {instances.map((instance) => (
                             <div className="mb-4">
-                                <label className="block text-gray-700 font-bold mb-2" htmlFor={input.id}>
-                                    {input.name}
+                                <label className="block text-gray-700 font-bold mb-2" htmlFor={instance?.input?.name}>
+                                    {instance?.input?.name}
                                 </label>
-                                <input
-                                    className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500"
-                                    type="text"
-                                    id={input.id}
-                                    value={values[input.id]}
-                                    onChange={e => {
-                                        setValues({ ...values, [input.id]: e.target.value });
-                                        saveValue(e);
-                                    }}
-                                />
+                                {instance?.input?.type == 'string' && (
+                                    <input
+                                        className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500"
+                                        type="text"
+                                        id={instance?.input?.name}
+                                        value={instance?.value}
+                                        onChange={(e) => {
+                                            instance.value = e.target.value;
+                                            setInstances([...instances]);
+                                        } }
+                                    />
+                                )}
+                                {instance?.input?.type == 'select' && (
+                                    <select
+                                        className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500"
+                                        id={instance?.input?.name}
+                                        value={instance?.value}
+                                        onChange={(e) => {
+                                            instance.value = e.target.value;
+                                            setInstances([...instances]);
+                                        } }
+                                    >
+                                        {instance?.input?.options?.map((option) => (
+                                            <option key={option} value={option}>{option}</option>
+                                        ))}
+                                    </select>
+                                )}
+                                {instance?.input?.type == 'date' && (
+                                    <input
+                                        className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500"
+                                        type="date"
+                                        id={instance?.input?.name}
+                                        value={instance?.value}
+                                        onChange={(e) => {
+                                            instance.value = e.target.value;
+                                            setInstances([...instances]);
+                                        } }
+                                    />
+                                )}
+                                {instance?.input?.type == 'integer' && (
+                                    <input
+                                        className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500"
+                                        type="number"
+                                        id={instance?.input?.name}
+                                        value={instance?.value}
+                                        onChange={(e) => {
+                                            instance.value = e.target.value;
+                                            setInstances([...instances]);
+                                        } }
+                                    />
+                                )}
+                                {instance?.input?.type == 'boolean' && (
+                                    <select
+                                        className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500"
+                                        id={instance?.input?.name}
+                                        value={instance?.value}
+                                        onChange={(e) => {
+                                            instance.value = e.target.value;
+                                            setInstances([...instances]);
+                                        } }
+                                    >
+                                        <option value="true">True</option>
+                                        <option value="false">False</option>
+                                    </select>
+                                )}
+
+
+
+
+
                             </div>
                         ))}
                     </div>

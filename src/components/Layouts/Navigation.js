@@ -20,6 +20,14 @@ const Navigation = ({ user }) => {
 
     const [open, setOpen] = useState(false)
 
+    function handleSelectTeam() {
+        router.push('/select');
+    }
+
+    function handleSettings() {
+        router.push('/settings');
+    }
+
     return (
         <nav className="bg-white border-b border-gray-100">
             {/* Primary Navigation Menu */}
@@ -80,6 +88,14 @@ const Navigation = ({ user }) => {
                                 </button>
                             }>
                             {/* Authentication */}
+
+                            <DropdownButton onClick={handleSettings}>
+                                Settings
+                            </DropdownButton>
+                            <DropdownButton onClick={handleSelectTeam}>
+                                Select Team
+                            </DropdownButton>
+                                
                             <DropdownButton onClick={logout}>
                                 Logout
                             </DropdownButton>

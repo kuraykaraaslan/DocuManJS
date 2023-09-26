@@ -17,7 +17,7 @@ const DocumentsIndex = () => {
     React.useEffect(() => {
         // http://localhost:8000/api/team/<active_team_id>/documents
         const active_team_id = getCookie('active_team_id');
-        axios.get('/api/team/' + active_team_id + '/documents').then(response => {
+        axios.get('/api/teams/' + active_team_id + '/documents').then(response => {
             setDocuments(response.data.documents);
             setActiveTeamId(active_team_id);
         }

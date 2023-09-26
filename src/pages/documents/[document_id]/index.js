@@ -35,7 +35,7 @@ const DocumenDetailPage = () => {
         if (document_id != null) {
             // http://localhost:8000/api/team/<active_team_id>/documents/<document_id>
             const active_team_id = getCookie('active_team_id');
-            axios.get('/api/team/' + active_team_id + '/documents/' + document_id).then(response => {
+            axios.get('/api/teams/' + active_team_id + '/documents/' + document_id).then(response => {
                 setDocumentId(response.data.document);
                 setActiveTeamId(active_team_id);
             }
